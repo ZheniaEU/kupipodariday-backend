@@ -1,13 +1,13 @@
 import { Base } from "src/utils/base.entity";
 
 export class Wishlist extends Base {
-   @Column();
+   @Column()
    //name — название списка. Не может быть длиннее 250 символов и короче одного;
 
-   @Column();
-   description — описание подборки, строка до 1500 символов;
+   @Column()
+   //description — описание подборки, строка до 1500 символов;
 
-   @Column();
+   @Column()
    //image — обложка для подборки;
 
    @Column();
