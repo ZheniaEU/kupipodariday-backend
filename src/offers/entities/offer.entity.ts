@@ -1,3 +1,4 @@
+import { IsBoolean, IsNumber } from "class-validator";
 import { Base } from "src/utils/base.entity";
 import { Column } from "typeorm";
 
@@ -14,12 +15,14 @@ export class Offer extends Base {
    @Column({
       scale: 2
    })
+   @IsNumber()
    amount: number;
 
    //hidden — флаг, который определяет показывать ли информацию о скидывающемся в списке. По умолчанию равен false.
    @Column({
       default: false,
    })
+   @IsBoolean()
    hidden: boolean;
 
    //связи

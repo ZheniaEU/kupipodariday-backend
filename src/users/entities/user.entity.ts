@@ -1,8 +1,7 @@
 
-import { Length } from "class-validator";
-import { IsEmail, IsNotEmpty, IsString, IsUrl } from "class-validator/types/decorator/decorators";
+import { IsEmail, IsNotEmpty, IsString, IsUrl, Length } from "class-validator";
 import { Base } from "src/utils/base.entity";
-import { Entity, Column, OneToOne, OneToMany, ManyToMany } from "typeorm";
+import { Entity, Column } from "typeorm";
 
 @Entity()
 export class User extends Base {
@@ -12,6 +11,7 @@ export class User extends Base {
       unique: true
    })
    @Length(2, 30)
+   @IsString()
    @IsNotEmpty()
    username: string;
 
@@ -20,12 +20,14 @@ export class User extends Base {
       default: "«Пока ничего не рассказал о себе»"
    })
    @Length(2, 200)
+   @IsString()
    about: string;
 
    //avatar — ссылка на аватар.В качестве значения по умолчанию задайте https:;//i.pravatar.cc/300
    @Column({
       default: "https:;//i.pravatar.cc/300"
    })
+   @IsString()
    @IsUrl()
    avatar: string;
 
@@ -33,6 +35,7 @@ export class User extends Base {
    @Column({
       unique: true
    })
+   @IsString()
    @IsEmail()
    email: string;
 
