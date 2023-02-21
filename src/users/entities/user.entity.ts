@@ -1,9 +1,10 @@
 
-import { IsEmail, IsNotEmpty, IsString, IsUrl, Length } from "class-validator";
+import { IsDate, IsEmail, IsNotEmpty, IsNumber, IsString, IsUrl, Length } from "class-validator";
 import { Base } from "src/utils/base.entity";
-import { Entity, Column } from "typeorm";
+import { Wish } from "src/wishes/entities/wish.entity";
+import { Entity, Column, OneToMany, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from "typeorm";
 
-@Entity()
+@Entity("User")
 export class User extends Base {
 
    //username — имя пользователя, уникальная строка от 2 до 30 символов, обязательное поле.
@@ -47,12 +48,13 @@ export class User extends Base {
 
 
    //связи
-   //@OneToOne()
+   //wishes — список желаемых подарков.Используйте для него соответствующий тип связи.
+   @OneToMany(() => Wish, (wishes) => wishes.owner)
+   wishes: Wish[];
 
+   //offers — содержит список подарков, на которые скидывается пользователь.Установите для него подходящий тип связи.
    //@OneToMany()
 
+   //wishlists -содержит список вишлистов, которые создал пользователь. Установите для него подходящий тип связи.
    //@ManyToMany()
-   //wishes — список желаемых подарков.Используйте для него соответствующий тип связи.
-   //offers — содержит список подарков, на которые скидывается пользователь.Установите для него подходящий тип связи.
-   //wishlists;
 }

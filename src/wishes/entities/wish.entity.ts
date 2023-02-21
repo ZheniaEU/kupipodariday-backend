@@ -1,7 +1,10 @@
-import { IsNotEmpty, IsNumber, IsString, IsUrl, Length } from "class-validator";
+import { IsDate, IsNotEmpty, IsNumber, IsString, IsUrl, Length } from "class-validator";
 import { Base } from "src/utils/base.entity";
-import { Column } from "typeorm";
+import { User } from "src/users/entities/user.entity";
 
+import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+
+@Entity("Wish")
 export class Wish extends Base {
 
    //name — название подарка. Не может быть длиннее 250 символов и короче одного.
@@ -37,23 +40,26 @@ export class Wish extends Base {
    @IsNumber()
    reised: number;
 
-   //owner — ссылка на пользователя, который добавил пожелание подарка.
-  // @Column()
-  // owner: string; // это связи?
-
    //description — строка с описанием подарка длиной от 1 и до 1024 символов.
    @Column()
    @IsString()
-   @Length(1,1024)
-   desctiption: string
+   @Length(1, 1024)
+   desctiption: string;
+
+
+   @ManyToOne(() => User, (owner) => owner.wishes)
+   owner: User;
+   //owner — ссылка на пользователя, который добавил пожелание подарка.
+   // @Column()
+   // owner: string; // это связи?
 
    //offers — массив ссылок на заявки скинуться от других пользователей.
-  // @Column()
+   // @Column()
    // это связи?
 
 
    //copied — содержит cчётчик тех, кто скопировал подарок себе. Целое десятичное число.
-  // @Column();
+   // @Column();
 
    // это связи?
 
