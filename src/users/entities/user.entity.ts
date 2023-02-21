@@ -1,8 +1,10 @@
 
-import { IsDate, IsEmail, IsNotEmpty, IsNumber, IsString, IsUrl, Length } from "class-validator";
+import { IsEmail, IsNotEmpty, IsString, IsUrl, Length } from "class-validator";
+import { Offer } from "src/offers/entities/offer.entity";
 import { Base } from "src/utils/base.entity";
 import { Wish } from "src/wishes/entities/wish.entity";
-import { Entity, Column, OneToMany, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from "typeorm";
+import { Wishlist } from "src/wishlists/entities/wishlist.entity";
+import { Entity, Column, OneToMany } from "typeorm";
 
 @Entity("User")
 export class User extends Base {
@@ -46,15 +48,15 @@ export class User extends Base {
    @IsNotEmpty()
    password: string;
 
-
-   //связи
    //wishes — список желаемых подарков.Используйте для него соответствующий тип связи.
    @OneToMany(() => Wish, (wishes) => wishes.owner)
    wishes: Wish[];
 
    //offers — содержит список подарков, на которые скидывается пользователь.Установите для него подходящий тип связи.
-   //@OneToMany()
+   @OneToMany(() => Offer, (offer) => offer.user)
+   offers: Offer[];
 
    //wishlists -содержит список вишлистов, которые создал пользователь. Установите для него подходящий тип связи.
-   //@ManyToMany()
+   @OneToMany(() => Wishlist, (wishlists) => wishlists.owner)
+   wishlists: Wishlist[];
 }

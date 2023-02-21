@@ -1,8 +1,8 @@
-import { IsDate, IsNotEmpty, IsNumber, IsString, IsUrl, Length } from "class-validator";
+import { IsNotEmpty, IsNumber, IsString, IsUrl, Length } from "class-validator";
 import { Base } from "src/utils/base.entity";
 import { User } from "src/users/entities/user.entity";
 
-import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, Entity, ManyToOne } from "typeorm";
 
 @Entity("Wish")
 export class Wish extends Base {
@@ -47,11 +47,9 @@ export class Wish extends Base {
    desctiption: string;
 
 
+   //owner — ссылка на пользователя, который добавил пожелание подарка.
    @ManyToOne(() => User, (owner) => owner.wishes)
    owner: User;
-   //owner — ссылка на пользователя, который добавил пожелание подарка.
-   // @Column()
-   // owner: string; // это связи?
 
    //offers — массив ссылок на заявки скинуться от других пользователей.
    // @Column()

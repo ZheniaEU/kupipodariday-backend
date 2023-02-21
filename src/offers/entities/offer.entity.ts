@@ -1,15 +1,10 @@
 import { IsBoolean, IsNumber } from "class-validator";
+import { User } from "src/users/entities/user.entity";
 import { Base } from "src/utils/base.entity";
-import { Column } from "typeorm";
+import { Column, Entity, ManyToOne } from "typeorm";
 
+@Entity("Offer")
 export class Offer extends Base {
-   // @Column()
-   //user содержит id желающего скинуться;
-   // это ссылка?
-
-   //   @Column()
-   // это ссылка?
-   //item содержит ссылку на товар;
 
    //amount — сумма заявки, округляется до двух знаков после запятой;
    @Column({
@@ -27,8 +22,16 @@ export class Offer extends Base {
 
    //связи
    //@OneToOne()
-
+   @ManyToOne(() => User, (user) => user.offers)
+   user: User;
    //@OneToMany()
 
    //@ManyToMany()
+   // @Column()
+   //user содержит id желающего скинуться;
+   // это ссылка?
+
+   //   @Column()
+   // это ссылка?
+   //item содержит ссылку на товар;
 }

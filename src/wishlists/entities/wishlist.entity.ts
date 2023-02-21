@@ -1,7 +1,9 @@
 import { IsString, IsUrl, Length } from "class-validator";
+import { User } from "src/users/entities/user.entity";
 import { Base } from "src/utils/base.entity";
-import { Column } from "typeorm";
+import { Column, Entity, ManyToOne } from "typeorm";
 
+@Entity("Wishlist")
 export class Wishlist extends Base {
 
    //name — название списка. Не может быть длиннее 250 символов и короче одного;
@@ -22,13 +24,9 @@ export class Wishlist extends Base {
    @IsUrl()
    image: string;
 
-   //@Column(); связи*
-   //items содержит набор ссылок на подарки.
+   //не реализовано это тоже связь?
+   //!items содержит набор ссылок на подарки.
 
-   //связи
-   //@OneToOne()
-
-   //@OneToMany()
-
-   //@ManyToMany()
+   @ManyToOne(() => User, (users) => users.wishlists)
+   owner: User;
 }
