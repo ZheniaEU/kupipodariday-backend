@@ -41,7 +41,7 @@ import { ConfigModule } from "@nestjs/config";
          username: "student",
          password: "student",
          database: "kupipodariday",
-         //schema: "kupipodariday",
+       //  schema: "kupipodariday",
          entities: [User, Offer, Wish, Wishlist],
          synchronize: true,
       }),

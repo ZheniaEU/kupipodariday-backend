@@ -1,8 +1,9 @@
-import { IsNotEmpty, IsNumber, IsString, IsUrl, Length } from "class-validator";
+import { IsInt, IsNotEmpty, IsNumber, IsString, IsUrl, Length } from "class-validator";
 import { Base } from "src/utils/base.entity";
 import { User } from "src/users/entities/user.entity";
 
-import { Column, Entity, ManyToOne } from "typeorm";
+import { Column, Entity, ManyToOne, OneToMany } from "typeorm";
+import { Offer } from "src/offers/entities/offer.entity";
 
 @Entity("Wish")
 export class Wish extends Base {
@@ -46,25 +47,17 @@ export class Wish extends Base {
    @Length(1, 1024)
    desctiption: string;
 
+   //copied — содержит cчётчик тех, кто скопировал подарок себе. Целое десятичное число.
+   @Column("int", {})
+   @IsInt()
+   copied: number;
 
+   //связи
    //owner — ссылка на пользователя, который добавил пожелание подарка.
    @ManyToOne(() => User, (owner) => owner.wishes)
    owner: User;
 
    //offers — массив ссылок на заявки скинуться от других пользователей.
-   // @Column()
-   // это связи?
-
-
-   //copied — содержит cчётчик тех, кто скопировал подарок себе. Целое десятичное число.
-   // @Column();
-
-   // это связи?
-
-   //связи
-   //@OneToOne()
-
-   //@OneToMany()
-
-   //@ManyToMany()
+   @OneToMany(() => Offer, (offer) => offer.item)
+   offers: Offer[];
 }
