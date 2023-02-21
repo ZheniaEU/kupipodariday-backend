@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsString, IsUrl, Length } from "class-validator/types/decorator/decorators";
+import { IsNotEmpty, IsNumber, IsString, IsUrl, Length } from "class-validator";
 import { Base } from "src/utils/base.entity";
 import { Column } from "typeorm";
 
