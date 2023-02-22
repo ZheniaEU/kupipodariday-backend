@@ -1,20 +1,23 @@
-import { Controller } from "@nestjs/common";
+import { Controller, Post, UseGuards } from "@nestjs/common";
 import { AuthService } from "./auth.service";
+import { LocalGuard } from "./guarsd/local.guard";
 
 @Controller("auth")
 export class AuthController {
    constructor(private readonly authService: AuthService) { }
 
-   //auth
-   // POST/signin
-   // POST/signup
-}
+   //регистрация
 
-// сразу накинуть паспорт, чтобы не писать создание пользователя 2 раз
-// простейшие энпоинты, раскидать все эндпоинты по файлам
-// хеш
-// докрутить энпоинты
-// вопрос про дто? когда их делать?
+   @UseGuards(LocalGuard)
+   @Post("signup")
+   signin() {
+      /* Генерируем для пользователя JWT токен */
+      return // this.authService.auth(req.user);
+   }
+
+   // логин
+   // POST/signin
+}
 
 // import { Controller, Get, UseGuards, Req } from '@nestjs/common';
 // import { AuthGuard } from '@nestjs/passport';
