@@ -2,41 +2,53 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from "@nestjs/commo
 import { UsersService } from "./users.service";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
+import { Req } from "@nestjs/common/decorators";
 
-// максимально тупой
+// import { UseGuards } from "@nestjs/common/decorators";
+// import { JwtGuard } from "src/auth/guarsd/jwt.guard";
+
+
+//гарду включать в самом конце после тестов
+//@UseGuards(JwtGuard)
 @Controller("users")
 export class UsersController {
    constructor(private readonly usersService: UsersService) { }
    //users
-   // GET/users/me
    // PATCH/users/me
    // GET/users/me/wishes
    // GET/users/{username}
    // GET/users/{username}/wishes
    // POST/users/find
 
-   @Post()
-   create(@Body() createUserDto: CreateUserDto) {
-      return this.usersService.create(createUserDto);
+   // GET/users/me
+   @Get("me")
+   getUser(@Req() req: Express.Request) {
+      return req.user;
+   }
+   // getUser(@Req() { user }: { user: User; }) {
+   //    return user;
+   // }
+
+
+   @Patch("me")
+   async updateUser(@Req() data, @Body() updateUserDto: UpdateUserDto) {
+      return await this.usersService.updateUser(data.user.id, updateUserDto);
    }
 
-   @Get()
-   findAll() {
-      return this.usersService.findAll();
-   }
+   // @Patch("me")
 
-   @Get(":id")
-   findOne(@Param("id") id: string) {
-      return this.usersService.findOne(+id);
-   }
 
-   @Patch(":id")
-   update(@Param("id") id: string, @Body() updateUserDto: UpdateUserDto) {
-      return this.usersService.update(+id, updateUserDto);
-   }
+   // @Get("me/wishes")
 
-   @Delete(":id")
-   remove(@Param("id") id: string) {
-      return this.usersService.remove(+id);
-   }
+
+   // @Get("me/wishlists")
+
+
+   // @Get(":username")
+
+   // @Post("find")
+
+
+   // @Get(":username/wishes")
+
 }

@@ -1,28 +1,38 @@
 import { Injectable } from "@nestjs/common";
-import { CreateUserDto } from "./dto/create-user.dto";
-import { UpdateUserDto } from "./dto/update-user.dto";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { User } from "./entities/user.entity";
 
-
-// тут логика конечный этап сообщения
 @Injectable()
 export class UsersService {
-   create(createUserDto: CreateUserDto) {
-      return "This action adds a new user";
+   constructor(
+      @InjectRepository(User)
+      private userRepository: Repository<User>,
+   ) { }
+
+   // async findUserById(id: string): Promise<User> {
+   //    return this.userRepository.findOne(id);
+   // }
+
+   async findUserByUsername(username: string): Promise<User> {
+      return this.userRepository.findOne({ where: { username } });
    }
 
-   findAll() {
-      return `This action returns all users`;
+   async createUser(userData: Partial<User>): Promise<User> {
+      const user = this.userRepository.create(userData);
+      return this.userRepository.save(user);
    }
 
-   findOne(id: number) {
-      return `This action returns a #${id} user`;
+   async updateUser(user: User, updatedData: Partial<User>): Promise<User> {
+      const updatedUser = this.userRepository.merge(user, updatedData);
+      return this.userRepository.save(updatedUser);
    }
 
-   update(id: number, updateUserDto: UpdateUserDto) {
-      return `This action updates a #${id} user`;
-   }
-
-   remove(id: number) {
-      return `This action removes a #${id} user`;
+   async findUsers(query: string): Promise<User[]> {
+      const users = await this.userRepository
+         .createQueryBuilder("user")
+         .where("LOWER(user.username) LIKE LOWER(:query)", { query: `%${query}%` })
+         .getMany();
+      return users;
    }
 }
