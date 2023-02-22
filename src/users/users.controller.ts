@@ -7,6 +7,13 @@ import { UpdateUserDto } from "./dto/update-user.dto";
 @Controller("users")
 export class UsersController {
    constructor(private readonly usersService: UsersService) { }
+   //users
+   // GET/users/me
+   // PATCH/users/me
+   // GET/users/me/wishes
+   // GET/users/{username}
+   // GET/users/{username}/wishes
+   // POST/users/find
 
    @Post()
    create(@Body() createUserDto: CreateUserDto) {

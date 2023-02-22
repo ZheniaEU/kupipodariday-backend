@@ -7,6 +7,14 @@ import { UpdateWishDto } from "./dto/update-wish.dto";
 export class WishesController {
    constructor(private readonly wishesService: WishesService) { }
 
+   //wishes
+   // POST/wishes
+   // GET/wishes/last
+   // GET/wishes/top
+   // GET/wishes/{id}
+   // PATCH/wishes/{id}
+   // DELETE/wishes/{id}
+   // POST/wishes/{id}/copy
    @Post()
    create(@Body() createWishDto: CreateWishDto) {
       return this.wishesService.create(createWishDto);

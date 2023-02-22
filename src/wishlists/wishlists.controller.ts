@@ -7,6 +7,13 @@ import { UpdateWishlistDto } from "./dto/update-wishlist.dto";
 export class WishlistsController {
    constructor(private readonly wishlistsService: WishlistsService) { }
 
+   //wishlistlists, если это кто то читает, не учитись на яндекс срактикуме, матерьял говно, и преподавание его такое же.
+   // GET/wishlistlists
+   // POST/wishlistlists
+   // GET/wishlistlists/{id}
+   // PATCH/wishlistlists/{id}
+   // DELETE/wishlistlists/{id}
+
    @Post()
    create(@Body() createWishlistDto: CreateWishlistDto) {
       return this.wishlistsService.create(createWishlistDto);
