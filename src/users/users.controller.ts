@@ -1,8 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from "@nestjs/common";
+import { Controller, Get, Body, Patch } from "@nestjs/common";
 import { UsersService } from "./users.service";
-import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { Req } from "@nestjs/common/decorators";
+
 
 // import { UseGuards } from "@nestjs/common/decorators";
 // import { JwtGuard } from "src/auth/guarsd/jwt.guard";
@@ -14,7 +14,6 @@ import { Req } from "@nestjs/common/decorators";
 export class UsersController {
    constructor(private readonly usersService: UsersService) { }
    //users
-   // PATCH/users/me
    // GET/users/me/wishes
    // GET/users/{username}
    // GET/users/{username}/wishes
@@ -29,7 +28,7 @@ export class UsersController {
    //    return user;
    // }
 
-
+   // PATCH/users/me
    @Patch("me")
    async updateUser(@Req() data, @Body() updateUserDto: UpdateUserDto) {
       return await this.usersService.updateUser(data.user.id, updateUserDto);

@@ -1,5 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
+import { HashService } from "src/hash/hash.service";
 import { Repository } from "typeorm";
 import { User } from "./entities/user.entity";
 
@@ -8,7 +9,15 @@ export class UsersService {
    constructor(
       @InjectRepository(User)
       private userRepository: Repository<User>,
+      private readonly hashService: HashService,
    ) { }
+
+   async createUser(userData: Partial<User>): Promise<User> {
+      const password = await this.hashService.hash(userData.password);
+      return await this.userRepository.save({ password: password, ...userData });
+   }
+
+
 
    // async findUserById(id: string): Promise<User> {
    //    return this.userRepository.findOne(id);
@@ -18,10 +27,10 @@ export class UsersService {
       return this.userRepository.findOne({ where: { username } });
    }
 
-   async createUser(userData: Partial<User>): Promise<User> {
-      const user = this.userRepository.create(userData);
-      return this.userRepository.save(user);
-   }
+   // async createUser(userData: Partial<User>): Promise<User> {
+   //    const user = this.userRepository.create(userData);
+   //    return this.userRepository.save(user);
+   // }
 
    async updateUser(user: User, updatedData: Partial<User>): Promise<User> {
       const updatedUser = this.userRepository.merge(user, updatedData);
