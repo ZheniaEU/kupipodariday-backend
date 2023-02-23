@@ -1,17 +1,5 @@
 import { User } from "src/users/entities/user.entity";
 
-declare global {
-   namespace Express {
-      interface Request {
-         user: User;
-      }
-   }
+export interface RequestUser extends Request {
+   user: User;
 }
-
-// import { User } from "src/users/entities/user.entity";
-
-// declare module "express" {
-//    export interface Request {
-//       user?: User;
-//    }
-// }

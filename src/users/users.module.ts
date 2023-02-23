@@ -8,6 +8,7 @@ import { HashModule } from "src/hash/hash.module";
 @Module({
    imports: [TypeOrmModule.forFeature([User]), HashModule],
    controllers: [UsersController],
+   exports: [UsersService],
    providers: [UsersService]
 })
 export class UsersModule { }

@@ -1,24 +1,33 @@
-import { Controller, Post, UseGuards } from "@nestjs/common";
+import { Controller, Post, UseGuards, Req, Body } from "@nestjs/common";
+import { CreateUserDto } from "src/users/dto/create-user.dto";
+import { User } from "src/users/entities/user.entity";
+import { UsersService } from "src/users/users.service";
 import { AuthService } from "./auth.service";
 import { LocalGuard } from "./guarsd/local.guard";
+import { LoginResponse } from "./login-response.interface";
+
+import type { RequestUser } from "src/types/express";
 
 @Controller("auth")
 export class AuthController {
-   constructor(private readonly authService: AuthService) { }
-
-   //регистрация
-
-   @UseGuards(LocalGuard)
-   @Post("signup")
-   signin() {
-      /* Генерируем для пользователя JWT токен */
-      return // this.authService.auth(req.user);
-   }
+   constructor(private authService: AuthService, private usersService: UsersService) { }
 
    // логин
-   // POST/signin
-}
+   @UseGuards(LocalGuard)
+   @Post("signin")
+   public async signin(@Req() req: RequestUser): Promise<LoginResponse> {
+      return await this.authService.auth(req.user.id);
+   }
 
+   //регистрация
+   @Post("signup")
+   public async signup(@Body() createUserDto: CreateUserDto): Promise<Omit<User, "password">> {
+      const user = await this.usersService.createUser(createUserDto);
+      delete user.password;
+
+      return user;
+   }
+}
 // import { Controller, Get, UseGuards, Req } from '@nestjs/common';
 // import { AuthGuard } from '@nestjs/passport';
 // import { AuthService } from './auth.service';
@@ -73,7 +82,6 @@ export class AuthController {
 //       return this.authService.auth(user);
 //    }
 // }
-
 
 // стратегия
 // import { Injectable, UnauthorizedException } from '@nestjs/common';

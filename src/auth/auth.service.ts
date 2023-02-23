@@ -1,27 +1,21 @@
 import { Injectable } from "@nestjs/common";
-//import { UsersService } from "src/users/users.service";
+import { JwtService } from "@nestjs/jwt";
+import { HashService } from "src/hash/hash.service";
+import { UsersService } from "src/users/users.service";
+import { LoginResponse } from "./login-response.interface";
 
-// заглушка
 @Injectable()
 export class AuthService {
+   constructor(private usersService: UsersService, private hashService: HashService, private jwtService: JwtService) { }
 
-   async validatePassword(user: any, password: any) {
-      if (user && password)
-         return true;
+   public async validateUser(username: string, password: string): Promise<boolean> {
+      const user = await this.usersService.findOne({ username });
+
+      return await this.hashService.compare(password, user.password);
+   }
+
+   public async auth(userId: number): Promise<LoginResponse> {
+      const token = await this.jwtService.signAsync({ userId });
+      return { access_token: token };
    }
 }
-
-// из документации неста
-// @Injectable()
-// export class AuthService {
-//    constructor(private usersService: UsersService) { }
-
-//    async validateUser(username: string, pass: string): Promise<any> {
-//       const user = await this.usersService.findOne(username);
-//       if (user && user.password === pass) {
-//          const { password, ...result } = user;
-//          return result;
-//       }
-//       return null;
-//    }
-// }

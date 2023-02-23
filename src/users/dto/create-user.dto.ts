@@ -1,184 +1,23 @@
-export class CreateUserDto { }
-// накой нам это нужно?
-// фильтруем то что не должно попадать юзверю или в базу данных
+import { IsEmail, IsOptional, IsString, Length } from "class-validator";
 
-// UserProfileResponseDto{
-//    id * [...];
-//    username * [...];
-//    about * [...];
-//    avatar * [...];
-//    email * [...];
-//    createdAt * [...];
-//    updatedAt * [...];
 
-// }
+export class CreateUserDto {
+   @IsString()
+   @Length(2, 30)
+   username: string;
 
-// UpdateUserDto{
-//    username[...]
-//    about[...]
-//    avatar[...]
-//    email[...]
-//    password[...]
+   @IsEmail()
+   email: string;
 
-// }
+   @IsString()
+   password: string;
 
-// Offer{
-//    id * [...];
-//    createdAt * [...];
-//    updatedAt * [...];
-//    item * Wish{... }
-//    amount * [...];
-//    hidden * [...];
-//    user * User{... }
+   @IsString()
+   @Length(2, 200)
+   @IsOptional()
+   about: string;
 
-// }
-
-// WishPartial{
-//    id[...]
-//    createdAt[...]
-//    updatedAt[...]
-//    name[...]
-//    link[...]
-//    image[...]
-//    price[...]
-//    raised[...]
-//    copied[...]
-//    description[...]
-
-// }
-
-// Wish{
-//    id * [...];
-//    createdAt * [...];
-//    updatedAt * [...];
-//    name * [...];
-//    link * [...];
-//    image * [...];
-//    price * [...];
-//    raised * [...];
-//    copied * [...];
-//    description * [...];
-//    owner * UserPublicProfileResponseDto{... }
-//    offers * [...];
-
-// }
-
-// Wishlist{
-//    id * [...];
-//    createdAt * [...];
-//    updatedAt * [...];
-//    name * [...];
-//    image * [...];
-//    owner * UserPublicProfileResponseDto{... }
-//    items * [...];
-
-// }
-
-// User{
-//    id * [...];
-//    username * [...];
-//    about * [...];
-//    avatar * [...];
-//    email * [...];
-//    createdAt * [...];
-//    updatedAt * [...];
-//    wishes * [...];
-//    offers * [...];
-//    wishlists * [...];
-
-// }
-
-//    UserPublicProfileResponseDto{
-//    id * [...];
-//    username * [...];
-//    about * [...];
-//    avatar * [...];
-//    createdAt * [...];
-//    updatedAt * [...];
-
-// }
-
-// UserWishesDto{
-//    id * [...];
-//    createdAt * [...];
-//    updatedAt * [...];
-//    name * [...];
-//    link * [...];
-//    image * [...];
-//    price * [...];
-//    raised * [...];
-//    copied * [...];
-//    description * [...];
-//    offers * [...];
-
-// }
-
-//    FindUsersDto{
-//    query * [...];
-
-// }
-
-//       CreateWishDto{
-//    name * [...];
-//    link * [...];
-//    image * [...];
-//    price * [...];
-//    description * [...];
-
-// }
-
-// UpdateWishDto{
-
-// }
-
-// CreateOfferDto{
-//    amount * [...];
-//    hidden[...]
-//    itemId * [...];
-
-// }
-
-//    CreateWishlistDto{
-//    name[...]
-//    image[...]
-//    itemsId[...]
-
-// }
-
-//       UpdateWishlistDto{
-//    name[...]
-//    image[...]
-//    itemsId[...]
-
-// }
-
-// SigninUserDto{
-//    username * [...];
-//    password * [...];
-
-// }
-
-// SigninUserResponseDto{
-//    access_token * [...];
-
-// }
-
-// CreateUserDto{
-//    username * [...];
-//    about[...]
-//    avatar[...]
-//    email * [...];
-//    password * [...];
-
-// }
-
-// SignupUserResponseDto{
-//    id * [...];
-//    username * [...];
-//    about * [...];
-//    avatar * [...];
-//    email * [...];
-//    createdAt * [...];
-//    updatedAt * [...];
-
-// }
+   @IsString()
+   @IsOptional()
+   avatar: string;
+}
