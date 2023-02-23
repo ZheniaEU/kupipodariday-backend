@@ -2,6 +2,7 @@ import { Controller, Get, Body, Patch } from "@nestjs/common";
 import { UsersService } from "./users.service";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { Req } from "@nestjs/common/decorators";
+import { User } from "./entities/user.entity";
 
 
 // import { UseGuards } from "@nestjs/common/decorators";
@@ -28,12 +29,21 @@ export class UsersController {
    //    return user;
    // }
 
-   // PATCH/users/me
-   @Patch("me")
-   async updateUser(@Req() data, @Body() updateUserDto: UpdateUserDto) {
-      return await this.usersService.updateUser(data.user.id, updateUserDto);
-   }
+   //PATCH/users/me
+   // @Patch("me")
+   // async updateUser(@Req() data, @Body() updateUserDto: UpdateUserDto) {
+   //    return await this.usersService.updateUser(data.user.id, updateUserDto);
+   // }
 
+   // @Patch('me')
+   // async updateAuthUser(@Req() { user }: { user: User; }, @Body() dto: UpdateUserDto): Promise<User> {
+   //    return await this.usersService.updateUser(user.id, dto);
+   // }
+
+   @Patch("me")
+   async updateUser(@Req() { user }: { user: User; }, @Body() updateUserDto: UpdateUserDto) {
+      return await this.usersService.updateUser(user.id, updateUserDto);
+   }
    // @Patch("me")
 
 
