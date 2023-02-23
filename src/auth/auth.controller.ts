@@ -6,7 +6,7 @@ import { AuthService } from "./auth.service";
 import { LocalGuard } from "./guarsd/local.guard";
 import { LoginResponse } from "./login-response.interface";
 
-import type { RequestUser } from "src/types/express";
+import type { RequestUser } from "src/types/user";
 
 @Controller("auth")
 export class AuthController {

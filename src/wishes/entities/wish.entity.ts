@@ -1,7 +1,6 @@
 import { IsInt, IsNotEmpty, IsNumber, IsString, IsUrl, Length } from "class-validator";
 import { Base } from "src/utils/base.entity";
 import { User } from "src/users/entities/user.entity";
-
 import { Column, Entity, ManyToOne, OneToMany } from "typeorm";
 import { Offer } from "src/offers/entities/offer.entity";
 
@@ -58,6 +57,10 @@ export class Wish extends Base {
    owner: User;
 
    //offers — массив ссылок на заявки скинуться от других пользователей.
+   //! тут какое-то каскадноу удаление
    @OneToMany(() => Offer, (offer) => offer.item)
    offers: Offer[];
+
+   // @ManyToOne(() => Wishlist, (wishlists) => wishlists.items)
+   // wishlist: Wishlist;
 }

@@ -25,8 +25,8 @@ export class Offer extends Base {
    //user содержит id желающего скинуться;
    @ManyToOne(() => User, (user) => user.offers)
    user: User;
-   //@OneToMany()
 
+   //! тут какое-то каскадноу удаление
    //item содержит ссылку на товар;
    @ManyToOne(() => Wish, (wish) => wish.offers)
    item: Wish;
