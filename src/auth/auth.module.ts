@@ -18,11 +18,11 @@ import { HashService } from "src/hash/hash.service";
       JwtModule.registerAsync({
          imports: [ConfigModule],
          useFactory: async () => ({ secret: process.env.JWT_SECRET, signOptions: { expiresIn: "30d" } }),
-         inject: [ConfigService],
-      }),
+         inject: [ConfigService]
+      })
    ],
    providers: [AuthService, JwtStrategy, LocalStrategy, HashService],
    exports: [AuthService],
-   controllers: [AuthController],
+   controllers: [AuthController]
 })
 export class AuthModule { }

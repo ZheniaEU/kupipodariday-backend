@@ -9,7 +9,7 @@ import { LoginResponse } from "./login-response.interface";
 export class AuthService {
    constructor(private usersService: UsersService, private hashService: HashService, private jwtService: JwtService) { }
 
-   public async validateUser(username: string, password: string): Promise<User | null> {
+   async validateUser(username: string, password: string): Promise<User | null> {
 
       const user = await this.usersService.findOne({ username });
       const passwordOk = user && await this.hashService.compare(password, user.password);
@@ -22,7 +22,8 @@ export class AuthService {
       return user;
    }
 
-   public async auth(userId: number): Promise<LoginResponse> {
+   async auth(userId: number): Promise<LoginResponse> {
+
       const token = await this.jwtService.signAsync({ userId });
       return { access_token: token };
    }

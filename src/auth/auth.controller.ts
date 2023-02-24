@@ -15,15 +15,15 @@ export class AuthController {
    // логин
    @UseGuards(LocalGuard)
    @Post("signin")
-   public async signin(@Req() req: RequestUser): Promise<LoginResponse> {
+   async signin(@Req() req: RequestUser): Promise<LoginResponse> {
       return await this.authService.auth(req.user.id);
    }
 
    //регистрация
    @Post("signup")
-   public async signup(@Body() createUserDto: CreateUserDto): Promise<Omit<User, "password">> {
-      const user = await this.usersService.createUser(createUserDto);
+   async signup(@Body() createUserDto: CreateUserDto): Promise<Omit<User, "password">> {
 
+      const user = await this.usersService.createUser(createUserDto);
       return user;
    }
 }

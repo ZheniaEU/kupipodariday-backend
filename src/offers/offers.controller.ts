@@ -15,10 +15,7 @@ export class OffersController {
 
    @HttpCode(HttpStatus.CREATED)
    @Post()
-   async create(
-      @Body() createOfferDto: CreateOfferDto,
-      @Req() req: RequestUser
-   ) {
+   async create(@Body() createOfferDto: CreateOfferDto, @Req() req: RequestUser) {
       return this.offersService.create(req.user, createOfferDto);
    }
 

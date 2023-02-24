@@ -17,10 +17,10 @@
       "strictBindCallApply": false,
       "forceConsistentCasingInFileNames": false,
       "noFallthroughCasesInSwitch": false,
-      "typeRoots": ["types"]
-   },
-   "include": [
-      "src/**/*.ts",
-      "src/types/*.d.ts"
-   ],
+      "typeRoots": ["src/types"]
+   }
+   // "include": [
+   //    "src/**/*.ts",
+   //    "src/types/*.d.ts"
+   // ],
 }

@@ -18,11 +18,6 @@ export class WishesController {
       return this.wishesService.create(req.user, createWishDto);
    }
 
-   // @Get()
-   // findAll() {
-   //    return this.wishesService.findAll();
-   // }
-
    @Get("last")
    async getLast() {
       return await this.wishesService.getLast();
@@ -40,11 +35,7 @@ export class WishesController {
 
    @UseGuards(JwtGuard)
    @Patch(":id")
-   update(
-      @Req() req: RequestUser,
-      @Param("id") id: string,
-      @Body() updateWishDto: UpdateWishDto
-   ) {
+   update(@Req() req: RequestUser, @Param("id") id: string, @Body() updateWishDto: UpdateWishDto) {
       return this.wishesService.update(req.user, +id, updateWishDto);
    }
 

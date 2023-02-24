@@ -1,11 +1,4 @@
-import {
-   IsInt,
-   IsNotEmpty,
-   IsNumber,
-   IsString,
-   IsUrl,
-   Length,
-} from "class-validator";
+import { IsInt, IsNotEmpty, IsNumber, IsString, IsUrl, Length } from "class-validator";
 import { Base } from "src/utils/base.entity";
 import { User } from "src/users/entities/user.entity";
 import { Column, Entity, ManyToOne, OneToMany } from "typeorm";
@@ -42,7 +35,7 @@ export class Wish extends Base {
    //raised — сумма предварительного сбора или сумма, которую пользователи сейчас готовы скинуть на подарок. Также округляется до сотых.
    @Column({
       scale: 2,
-      default: 0,
+      default: 0
    })
    @IsNumber()
    reised: number;
@@ -55,7 +48,7 @@ export class Wish extends Base {
 
    //copied — содержит cчётчик тех, кто скопировал подарок себе. Целое десятичное число.
    @Column("int", {
-      default: 0,
+      default: 0
    })
    @IsInt()
    copied: number;
@@ -72,7 +65,4 @@ export class Wish extends Base {
       onDelete: "CASCADE"
    })
    offers: Offer[];
-
-   // @ManyToOne(() => Wishlist, (wishlists) => wishlists.items)
-   // wishlist: Wishlist;
 }

@@ -24,7 +24,7 @@ export class Wishlist extends Base {
    @IsUrl()
    image: string;
 
-   @ManyToMany(() => Wish)
+   @ManyToMany(() => Wish, { cascade: true })
    @JoinTable()
    items: Wish[];
 

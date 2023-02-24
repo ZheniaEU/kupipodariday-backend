@@ -9,13 +9,13 @@ import { JwtPayload } from "../jwt-payload.interface";
 export class JwtStrategy extends PassportStrategy(Strategy) {
    constructor(private readonly usersService: UsersService) {
       super({
-         // получаем готовый токен из headers
          jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-         secretOrKey: process.env.JWT_SECRET,
+         secretOrKey: process.env.JWT_SECRET
       });
    }
 
    async validate(payload: JwtPayload) {
+
       const user = await this.usersService.findById(payload.userId);
       if (!user) {
          throw new UnauthorizedException();

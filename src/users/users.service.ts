@@ -17,7 +17,8 @@ export class UsersService {
       private readonly wishesService: WishesService
    ) { }
 
-   public async createUser(userData: CreateUserDto): Promise<User> {
+   async createUser(userData: CreateUserDto): Promise<User> {
+
       const user = await this.userRepository.findOneBy([{ username: userData.username }, { email: userData.email }]);
 
       if (user) {
@@ -28,14 +29,15 @@ export class UsersService {
       return await this.userRepository.save({ ...userData, password });
    }
 
-   public async updateUser(oldUser: User, data: UpdateUserDto): Promise<User> {
+   async updateUser(user: User, data: UpdateUserDto): Promise<User> {
+
       const userWithThisName = await this.userRepository.findOneBy({ username: data.username });
 
-      if (userWithThisName && oldUser.username !== data.username) {
+      if (userWithThisName && user.username !== data.username) {
          throw new BadRequestException("такой username уже занят");
       }
 
-      if (data.email && oldUser.email !== data.email) {
+      if (data.email && user.email !== data.email) {
          throw new BadRequestException("шляпа");
       }
 
@@ -43,27 +45,22 @@ export class UsersService {
          data.password = await this.hashService.hash(data.password);
       }
 
-
-      await this.userRepository.update(oldUser.id, {
-         ...oldUser,
-         username: data?.username,
-         password: data?.password,
-         email: data?.email,
-         about: data?.about,
-         avatar: data?.avatar,
+      await this.userRepository.update(user.id, {
+         ...user, username: data?.username, password: data?.password, email: data?.email, about: data?.about, avatar: data?.avatar
       });
 
-
-      const updatedUser = await this.userRepository.findOneBy({ id: oldUser.id });
+      const updatedUser = await this.userRepository.findOneBy({ id: user.id });
       delete updatedUser.password;
+
       return updatedUser;
    }
 
-   public async findById(id: number): Promise<User> {
+   async findById(id: number): Promise<User> {
       return await this.userRepository.findOneBy({ id });
    }
 
-   public async findOne(options: FindOptionsWhere<User>): Promise<User> {
+   async findOne(options: FindOptionsWhere<User>): Promise<User> {
+
       const user = await this.userRepository.findOneBy(options);
 
       if (!user) {
@@ -72,25 +69,21 @@ export class UsersService {
       return user;
    }
 
-   public async getWishes(user: User) {
+   async getWishes(user: User) {
       return await this.wishesService.findUserWishes(user);
    }
 
-   public async findMany(query: string) {
-      const users = await this.userRepository.find({
-         where: [{ username: query }, { email: query }],
-      });
+   async findMany(query: string) {
+
+      const users = await this.userRepository.find({ where: [{ username: query }, { email: query }] });
 
       if (users.length !== 0) {
          const usersWithoutPass = users.map((item) => {
-            const { password, ...rest } = item;
-
-            return rest;
+            delete item.password;
+            return item;
          });
-
          return usersWithoutPass;
       }
-
       return users;
    }
 }

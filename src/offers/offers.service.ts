@@ -17,13 +17,8 @@ export class OffersService {
 
    //   ВРОДЕ РАБОТАЕТ (НАДО ПРОВЕРИТЬ)
    async create(user: User, createOfferDto: CreateOfferDto) {
-      const wish = await this.wishesService.findOneQuery({
-         where: { id: createOfferDto.itemId },
-         relations: {
-            offers: true,
-            owner: true,
-         },
-      });
+
+      const wish = await this.wishesService.findOneQuery({ where: { id: createOfferDto.itemId }, relations: { offers: true, owner: true } });
 
       if (wish.owner.id === user.id) {
          throw new ForbiddenException("нельзя сюда");
@@ -38,39 +33,23 @@ export class OffersService {
       await this.wishesService.updateReised(wish.id, reised);
 
       const offer = this.offersRepository.create({
-         amount: createOfferDto.amount,
-         hidden: createOfferDto.hidden,
-         item: wish,
-         user,
+         amount: createOfferDto.amount, hidden: createOfferDto.hidden, item: wish, user
       });
-
       this.offersRepository.save(offer);
 
       return {};
    }
 
    async findAll() {
-      return await this.offersRepository.find({
-         relations: {
-            item: true,
-            user: true,
-         },
-      });
+      return await this.offersRepository.find({ relations: { item: true, user: true } });
    }
-
    async findOne(id: number) {
-      const offer = this.offersRepository.findOne({
-         where: { id },
-         relations: {
-            item: true,
-            user: true,
-         },
-      });
+
+      const offer = this.offersRepository.findOne({ where: { id }, relations: { item: true, user: true } });
 
       if (!offer) {
          throw new NotFoundException();
       }
-
       return offer;
    }
 }
