@@ -1,4 +1,11 @@
-import { IsInt, IsNotEmpty, IsNumber, IsString, IsUrl, Length } from "class-validator";
+import {
+   IsInt,
+   IsNotEmpty,
+   IsNumber,
+   IsString,
+   IsUrl,
+   Length,
+} from "class-validator";
 import { Base } from "src/utils/base.entity";
 import { User } from "src/users/entities/user.entity";
 import { Column, Entity, ManyToOne, OneToMany } from "typeorm";
@@ -6,7 +13,6 @@ import { Offer } from "src/offers/entities/offer.entity";
 
 @Entity("Wish")
 export class Wish extends Base {
-
    //name — название подарка. Не может быть длиннее 250 символов и короче одного.
    @Column()
    @Length(1, 250)
@@ -28,7 +34,7 @@ export class Wish extends Base {
 
    //price — стоимость подарка, с округлением до сотых, число.
    @Column({
-      scale: 2
+      scale: 2,
    })
    @IsNumber()
    price: number;
@@ -36,7 +42,7 @@ export class Wish extends Base {
    //raised — сумма предварительного сбора или сумма, которую пользователи сейчас готовы скинуть на подарок. Также округляется до сотых.
    @Column({
       scale: 2,
-      default: 0
+      default: 0,
    })
    @IsNumber()
    reised: number;
@@ -49,7 +55,7 @@ export class Wish extends Base {
 
    //copied — содержит cчётчик тех, кто скопировал подарок себе. Целое десятичное число.
    @Column("int", {
-      default: 0
+      default: 0,
    })
    @IsInt()
    copied: number;
@@ -61,7 +67,10 @@ export class Wish extends Base {
 
    //offers — массив ссылок на заявки скинуться от других пользователей.
    //! тут какое-то каскадноу удаление
-   @OneToMany(() => Offer, (offer) => offer.item)
+   @OneToMany(() => Offer, (offer) => offer.item, {
+      cascade: true,
+      onDelete: "CASCADE"
+   })
    offers: Offer[];
 
    // @ManyToOne(() => Wishlist, (wishlists) => wishlists.items)

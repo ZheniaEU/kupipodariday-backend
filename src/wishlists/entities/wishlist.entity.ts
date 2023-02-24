@@ -6,7 +6,6 @@ import { Column, Entity, JoinTable, ManyToMany, ManyToOne } from "typeorm";
 
 @Entity("Wishlist")
 export class Wishlist extends Base {
-
    //name — название списка. Не может быть длиннее 250 символов и короче одного;
    @Column()
    @IsString()

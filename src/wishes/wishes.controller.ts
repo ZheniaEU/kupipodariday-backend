@@ -7,15 +7,14 @@ import { JwtGuard } from "src/auth/guarsd/jwt.guard";
 import { RequestUser } from "src/types/user";
 import { HttpStatus } from "@nestjs/common/enums";
 
-@UseGuards(JwtGuard)
 @Controller("wishes")
 export class WishesController {
    constructor(private readonly wishesService: WishesService) { }
 
+   @UseGuards(JwtGuard)
    @HttpCode(HttpStatus.CREATED)
    @Post()
    create(@Body() createWishDto: CreateWishDto, @Req() req: RequestUser) {
-
       return this.wishesService.create(req.user, createWishDto);
    }
 
@@ -24,18 +23,41 @@ export class WishesController {
    //    return this.wishesService.findAll();
    // }
 
+   @Get("last")
+   async getLast() {
+      return await this.wishesService.getLast();
+   }
+
+   @Get("top")
+   async getTop() {
+      return await this.wishesService.getTop();
+   }
+
    @Get(":id")
    findOne(@Param("id") id: string) {
       return this.wishesService.findOne(+id);
    }
 
+   @UseGuards(JwtGuard)
    @Patch(":id")
-   update(@Param("id") id: string, @Body() updateWishDto: UpdateWishDto) {
-      return this.wishesService.update(+id, updateWishDto);
+   update(
+      @Req() req: RequestUser,
+      @Param("id") id: string,
+      @Body() updateWishDto: UpdateWishDto
+   ) {
+      return this.wishesService.update(req.user, +id, updateWishDto);
    }
 
+   @UseGuards(JwtGuard)
    @Delete(":id")
-   remove(@Param("id") id: string) {
-      return this.wishesService.remove(+id);
+   async remove(@Param("id") id: string, @Req() req: RequestUser) {
+      return await this.wishesService.remove(req.user, +id);
+   }
+
+   @HttpCode(HttpStatus.CREATED)
+   @UseGuards(JwtGuard)
+   @Post(":id/copy")
+   async copy(@Param("id") id: string, @Req() req: RequestUser) {
+      return await this.wishesService.copy(req.user, +id);
    }
 }

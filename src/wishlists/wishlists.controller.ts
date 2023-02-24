@@ -2,17 +2,13 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from "@nestjs/commo
 import { WishlistsService } from "./wishlists.service";
 import { CreateWishlistDto } from "./dto/create-wishlist.dto";
 import { UpdateWishlistDto } from "./dto/update-wishlist.dto";
+import { UseGuards } from "@nestjs/common/decorators";
+import { JwtGuard } from "src/auth/guarsd/jwt.guard";
 
+@UseGuards(JwtGuard)
 @Controller("wishlists")
 export class WishlistsController {
    constructor(private readonly wishlistsService: WishlistsService) { }
-
-   //wishlistlists, если это кто то читает, не учитись на яндекс срактикуме, матерьял говно, и преподавание его такое же.
-   // GET/wishlistlists
-   // POST/wishlistlists
-   // GET/wishlistlists/{id}
-   // PATCH/wishlistlists/{id}
-   // DELETE/wishlistlists/{id}
 
    @Post()
    create(@Body() createWishlistDto: CreateWishlistDto) {
@@ -30,7 +26,10 @@ export class WishlistsController {
    }
 
    @Patch(":id")
-   update(@Param("id") id: string, @Body() updateWishlistDto: UpdateWishlistDto) {
+   update(
+      @Param("id") id: string,
+      @Body() updateWishlistDto: UpdateWishlistDto
+   ) {
       return this.wishlistsService.update(+id, updateWishlistDto);
    }
 
