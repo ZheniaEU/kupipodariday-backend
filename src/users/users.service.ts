@@ -1,6 +1,8 @@
 import { BadRequestException, Injectable, ConflictException } from "@nestjs/common";
+import { NotFoundException } from "@nestjs/common/exceptions";
 import { InjectRepository } from "@nestjs/typeorm";
 import { HashService } from "src/hash/hash.service";
+import { WishesService } from "src/wishes/wishes.service";
 import { FindOptionsWhere, Repository } from "typeorm";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
@@ -11,7 +13,8 @@ export class UsersService {
    constructor(
       @InjectRepository(User)
       private userRepository: Repository<User>,
-      private readonly hashService: HashService
+      private readonly hashService: HashService,
+      private readonly wishesService: WishesService
    ) { }
 
    public async createUser(userData: CreateUserDto): Promise<User> {
@@ -25,11 +28,14 @@ export class UsersService {
       return await this.userRepository.save({ ...userData, password });
    }
 
-   public async updateUser(id: number, data: UpdateUserDto): Promise<User> {
+   public async updateUser(oldUser: User, data: UpdateUserDto): Promise<User> {
+      const userWithThisName = await this.userRepository.findOneBy({ username: data.username });
 
-      const user = await this.userRepository.findOneBy({ id });
+      if (userWithThisName && oldUser.username !== data.username) {
+         throw new BadRequestException("такой username уже занят");
+      }
 
-      if (data.email && user.email !== data.email) {
+      if (data.email && oldUser.email !== data.email) {
          throw new BadRequestException("шляпа");
       }
 
@@ -37,17 +43,20 @@ export class UsersService {
          data.password = await this.hashService.hash(data.password);
       }
 
-      const updatedUser = {
-         ...user,
+
+      await this.userRepository.update(oldUser.id, {
+         ...oldUser,
          username: data?.username,
          password: data?.password,
          email: data?.email,
          about: data?.about,
          avatar: data?.avatar,
-      };
-      await this.userRepository.update(id, updatedUser);
+      });
 
-      return await this.userRepository.findOneBy({ id });
+
+      const updatedUser = await this.userRepository.findOneBy({ id: oldUser.id });
+      delete updatedUser.password;
+      return updatedUser;
    }
 
    public async findById(id: number): Promise<User> {
@@ -55,6 +64,33 @@ export class UsersService {
    }
 
    public async findOne(options: FindOptionsWhere<User>): Promise<User> {
-      return await this.userRepository.findOneBy(options);
+      const user = await this.userRepository.findOneBy(options);
+
+      if (!user) {
+         throw new NotFoundException("Пользователь не найден");
+      }
+      return user;
+   }
+
+   public async getWishes(user: User) {
+      return await this.wishesService.findUserWishes(user);
+   }
+
+   public async findMany(query: string) {
+      const users = await this.userRepository.find({
+         where: [{ username: query }, { email: query }],
+      });
+
+      if (users.length !== 0) {
+         const usersWithoutPass = users.map((item) => {
+            const { password, ...rest } = item;
+
+            return rest;
+         });
+
+         return usersWithoutPass;
+      }
+
+      return users;
    }
 }

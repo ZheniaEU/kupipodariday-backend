@@ -17,12 +17,7 @@ import { HashService } from "src/hash/hash.service";
       ConfigModule,
       JwtModule.registerAsync({
          imports: [ConfigModule],
-         useFactory: async (configService: ConfigService) => {
-            return {
-               secret: "top_secret",
-               signOptions: { expiresIn: "30d" },
-            };
-         },
+         useFactory: async () => ({ secret: process.env.JWT_SECRET, signOptions: { expiresIn: "30d" } }),
          inject: [ConfigService],
       }),
    ],

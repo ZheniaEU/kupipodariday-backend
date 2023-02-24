@@ -1,4 +1,3 @@
-
 import { IsEmail, IsNotEmpty, IsString, IsUrl, Length } from "class-validator";
 import { Offer } from "src/offers/entities/offer.entity";
 import { Base } from "src/utils/base.entity";

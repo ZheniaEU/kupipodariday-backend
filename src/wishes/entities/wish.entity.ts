@@ -35,7 +35,8 @@ export class Wish extends Base {
 
    //raised — сумма предварительного сбора или сумма, которую пользователи сейчас готовы скинуть на подарок. Также округляется до сотых.
    @Column({
-      scale: 2
+      scale: 2,
+      default: 0
    })
    @IsNumber()
    reised: number;
@@ -44,10 +45,12 @@ export class Wish extends Base {
    @Column()
    @IsString()
    @Length(1, 1024)
-   desctiption: string;
+   description: string;
 
    //copied — содержит cчётчик тех, кто скопировал подарок себе. Целое десятичное число.
-   @Column("int", {})
+   @Column("int", {
+      default: 0
+   })
    @IsInt()
    copied: number;
 
