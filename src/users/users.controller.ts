@@ -27,7 +27,6 @@ export class UsersController {
       return await this.usersService.getWishes(req.user);
    }
 
-
    @Get(":username")
    async getUserByUsername(@Param() { username }: { username: string; }) {
       return await this.usersService.findOne({ username });

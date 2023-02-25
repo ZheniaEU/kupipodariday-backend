@@ -15,7 +15,6 @@ export class OffersService {
       private wishesService: WishesService
    ) { }
 
-   //   ВРОДЕ РАБОТАЕТ (НАДО ПРОВЕРИТЬ)
    async create(user: User, createOfferDto: CreateOfferDto) {
 
       const wish = await this.wishesService.findOneQuery({ where: { id: createOfferDto.itemId }, relations: { offers: true, owner: true } });
@@ -41,15 +40,25 @@ export class OffersService {
    }
 
    async findAll() {
-      return await this.offersRepository.find({ relations: { item: true, user: true } });
+
+      const offers = await this.offersRepository.find({ relations: { item: true, user: true } });
+
+      offers.forEach(offer => {
+         delete offer.user.password;
+      });
+
+      return offers;
    }
+
    async findOne(id: number) {
 
-      const offer = this.offersRepository.findOne({ where: { id }, relations: { item: true, user: true } });
+      const offer = await this.offersRepository.findOne({ where: { id }, relations: { item: true, user: true } });
 
       if (!offer) {
          throw new NotFoundException();
       }
+      delete offer.user.password;
+
       return offer;
    }
 }

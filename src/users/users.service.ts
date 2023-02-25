@@ -59,7 +59,15 @@ export class UsersService {
    }
 
    async findById(id: number): Promise<User> {
-      return await this.userRepository.findOneBy({ id });
+
+      const user = await this.userRepository.findOneBy({ id });
+      if (!user) {
+         throw new NotFoundException("Пользователь не найден");
+      }
+
+      delete user.password;
+
+      return user;
    }
 
    async findOne(options: FindOptionsWhere<User>): Promise<User> {

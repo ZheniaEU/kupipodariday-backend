@@ -19,12 +19,17 @@ export class WishlistsService {
 
       const wishes = await this.wishesService.getManyById(createWishlistDto.itemsId);
       const wishlist = this.wishlistRepository.create({ ...createWishlistDto, items: wishes, owner: user });
+      delete wishlist.owner.password;
 
       return await this.wishlistRepository.save(wishlist);
    }
 
    async findAll() {
-      return await this.wishlistRepository.find({ relations: { owner: true, items: true } });
+      const wishlist = await this.wishlistRepository.find({ relations: { owner: true, items: true } });
+      wishlist.forEach(item => {
+         delete item.owner.password;
+      });
+      return wishlist;
    }
 
    async findOne(id: number) {
@@ -34,6 +39,7 @@ export class WishlistsService {
       if (!wishlist) {
          throw new NotFoundException();
       }
+      delete wishlist.owner.password;
 
       return wishlist;
    }
@@ -52,7 +58,10 @@ export class WishlistsService {
 
       await this.wishlistRepository.save({ ...wishlist, ...updateWishlistDto, items: wishes });
 
-      return await this.wishlistRepository.findOne({ where: { id }, relations: { owner: true, items: true } });
+      const newWishlist = await this.wishlistRepository.findOne({ where: { id }, relations: { owner: true, items: true } });
+      delete newWishlist.owner.password;
+
+      return newWishlist;
    }
 
    async remove(user: User, id: number) {
@@ -63,6 +72,9 @@ export class WishlistsService {
          throw new NotFoundException();
       }
 
-      return await this.wishlistRepository.remove(wishlist);
+      const removed = await this.wishlistRepository.remove(wishlist);
+      delete removed.owner.password;
+
+      return removed;
    }
 }

@@ -22,15 +22,33 @@ export class WishesService {
    }
 
    async findUserWishes(user: User) {
-      return await this.wishesRepository.findBy({ owner: { id: user.id } });
+
+      const wishes = await this.wishesRepository.findBy({ owner: { id: user.id } });
+      wishes.forEach(wish => {
+         delete wish.owner.password;
+      });
+      return wishes;
    }
 
    async getLast() {
-      return await this.wishesRepository.find({ take: 40, order: { createdAt: "desc" }, relations: { owner: true, offers: true } });
+
+      const wishes = await this.wishesRepository.find({ take: 40, order: { createdAt: "desc" }, relations: { owner: true, offers: true } });
+
+      wishes.forEach(wish => {
+         delete wish.owner.password;
+      });
+
+      return wishes;
    }
 
    async getTop() {
-      return await this.wishesRepository.find({ take: 20, order: { copied: "desc" }, relations: { owner: true, offers: true } });
+
+      const wishes = await this.wishesRepository.find({ take: 20, order: { copied: "desc" }, relations: { owner: true, offers: true } });
+      wishes.forEach(wish => {
+         delete wish.owner.password;
+      });
+
+      return wishes;
    }
 
    async findOne(id: number) {
@@ -40,6 +58,8 @@ export class WishesService {
       if (!wish) {
          throw new NotFoundException();
       }
+      delete wish.owner.password;
+
       return wish;
    }
 
@@ -48,7 +68,7 @@ export class WishesService {
       const wish = await this.wishesRepository.findOne(options);
 
       if (!wish) {
-         throw new NotFoundException();
+         throw new NotFoundException("не удалось найти такие wishes");
       }
       return wish;
    }
@@ -83,6 +103,9 @@ export class WishesService {
       }
 
       await this.wishesRepository.delete({ id });
+
+      delete wish.owner.password;
+
       return wish;
    }
 
