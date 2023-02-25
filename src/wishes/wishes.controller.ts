@@ -7,11 +7,11 @@ import { JwtGuard } from "src/auth/guarsd/jwt.guard";
 import { RequestUser } from "src/types/user";
 import { HttpStatus } from "@nestjs/common/enums";
 
+@UseGuards(JwtGuard)
 @Controller("wishes")
 export class WishesController {
    constructor(private readonly wishesService: WishesService) { }
 
-   @UseGuards(JwtGuard)
    @HttpCode(HttpStatus.CREATED)
    @Post()
    create(@Body() createWishDto: CreateWishDto, @Req() req: RequestUser) {
@@ -33,20 +33,17 @@ export class WishesController {
       return this.wishesService.findOne(+id);
    }
 
-   @UseGuards(JwtGuard)
    @Patch(":id")
    update(@Req() req: RequestUser, @Param("id") id: string, @Body() updateWishDto: UpdateWishDto) {
       return this.wishesService.update(req.user, +id, updateWishDto);
    }
 
-   @UseGuards(JwtGuard)
    @Delete(":id")
    async remove(@Param("id") id: string, @Req() req: RequestUser) {
       return await this.wishesService.remove(req.user, +id);
    }
 
    @HttpCode(HttpStatus.CREATED)
-   @UseGuards(JwtGuard)
    @Post(":id/copy")
    async copy(@Param("id") id: string, @Req() req: RequestUser) {
       return await this.wishesService.copy(req.user, +id);

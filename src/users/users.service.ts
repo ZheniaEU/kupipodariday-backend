@@ -19,14 +19,17 @@ export class UsersService {
 
    async createUser(userData: CreateUserDto): Promise<User> {
 
-      const user = await this.userRepository.findOneBy([{ username: userData.username }, { email: userData.email }]);
+      const userSearch = await this.userRepository.findOneBy([{ username: userData.username }, { email: userData.email }]);
 
-      if (user) {
+      if (userSearch) {
          throw new ConflictException("Пользователь с таким email или username уже зарегистрирован");
       }
 
       const password = await this.hashService.hash(userData.password);
-      return await this.userRepository.save({ ...userData, password });
+
+      const user = await this.userRepository.save({ ...userData, password });
+      delete user.password;
+      return user;
    }
 
    async updateUser(user: User, data: UpdateUserDto): Promise<User> {
