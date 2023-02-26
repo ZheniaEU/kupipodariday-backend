@@ -7,16 +7,12 @@ import { Column, Entity, ManyToOne } from "typeorm";
 @Entity("Offer")
 export class Offer extends Base {
   //amount — сумма заявки, округляется до двух знаков после запятой;
-  @Column({
-    scale: 2,
-  })
+  @Column({ scale: 2 })
   @IsNumber()
   amount: number;
 
   //hidden — флаг, который определяет показывать ли информацию о скидывающемся в списке. По умолчанию равен false.
-  @Column({
-    default: false,
-  })
+  @Column({ default: false })
   @IsBoolean()
   hidden: boolean;
 
@@ -26,8 +22,6 @@ export class Offer extends Base {
   user: User;
 
   //item содержит ссылку на товар;
-  @ManyToOne(() => Wish, (wish) => wish.offers, {
-    onDelete: "CASCADE",
-  })
+  @ManyToOne(() => Wish, (wish) => wish.offers, { onDelete: "CASCADE" })
   item: Wish;
 }

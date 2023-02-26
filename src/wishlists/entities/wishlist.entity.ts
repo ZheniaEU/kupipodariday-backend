@@ -13,7 +13,7 @@ export class Wishlist extends Base {
    name: string;
 
    //description — описание подборки, строка до 1500 символов;
-   @Column()
+   @Column({ default: "описание по умолчанию" })
    @IsString()
    @Length(1, 1500)
    description: string;

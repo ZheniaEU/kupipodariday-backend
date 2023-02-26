@@ -47,9 +47,7 @@ export class Wish extends Base {
    description: string;
 
    //copied — содержит cчётчик тех, кто скопировал подарок себе. Целое десятичное число.
-   @Column("int", {
-      default: 0
-   })
+   @Column("int", { default: 0 })
    @IsInt()
    copied: number;
 
@@ -60,9 +58,6 @@ export class Wish extends Base {
 
    //offers — массив ссылок на заявки скинуться от других пользователей.
    //! тут какое-то каскадноу удаление
-   @OneToMany(() => Offer, (offer) => offer.item, {
-      cascade: true,
-      onDelete: "CASCADE"
-   })
+   @OneToMany(() => Offer, (offer) => offer.item, { cascade: true, onDelete: "CASCADE" })
    offers: Offer[];
 }

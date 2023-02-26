@@ -25,7 +25,7 @@ export class WishesService {
 
       const wishes = await this.wishesRepository.findBy({ owner: { id: user.id } });
       wishes.forEach(wish => {
-         delete wish.owner.password;
+         delete wish?.owner?.password;
       });
       return wishes;
    }
